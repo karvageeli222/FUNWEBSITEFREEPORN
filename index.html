@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shrek Zone</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;overflow-x:hidden;font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#222;background:#fff;display:grid;place-items:center}
+main{position:relative;text-align:center;padding:30px 18px;z-index:1;width:100%}
+h1{font-size:clamp(2.8rem,8vw,6.2rem);line-height:.95;margin:0 0 12px;font-weight:1000;letter-spacing:-.07em;color:#4d8c27;text-shadow:0 3px 0 #d8edc8}
+.sub{margin:0 0 8px;color:#6b6b6b;font-weight:800;letter-spacing:.13em;text-transform:uppercase;font-size:.82rem}
+.hint{margin:13px 0 0;color:#555;font-weight:700}
+.shrek-button{display:block;border:0;background:transparent;padding:0;margin:20px auto 0;cursor:pointer;transition:transform .22s ease,filter .22s ease;animation:bob 3.2s ease-in-out infinite}
+.shrek-button:hover{transform:translateY(-7px) scale(1.035);filter:drop-shadow(0 14px 14px #0002)}
+.shrek-button:active{transform:scale(.97)}
+.shrek-button:focus-visible{outline:4px solid #80bd43;outline-offset:8px;border-radius:20px}
+.shrek{width:min(68vw,390px);height:auto;display:block;border-radius:4px;box-shadow:0 12px 34px #00000018}
+.pill{display:inline-flex;align-items:center;gap:9px;margin-top:22px;padding:11px 18px;border:1px solid #b9d99e;border-radius:999px;background:#f4faef;color:#477c28;font-weight:850;letter-spacing:.04em}
+.dot{width:9px;height:9px;border-radius:50%;background:#76b83b;box-shadow:0 0 9px #76b83b88}
+@keyframes bob{0%,100%{translate:0 0}50%{translate:0 -7px}}
+.overlay{position:fixed;inset:0;z-index:5;display:none;place-items:center;padding:22px;background:#111e;backdrop-filter:blur(8px)}
+.overlay.open{display:grid}
+.player{width:min(100%,980px);position:relative}
+.player video{width:100%;max-height:78vh;background:#000;border:2px solid #80bd43;border-radius:16px;box-shadow:0 25px 90px #0008}
+.close{position:absolute;right:0;top:-54px;border:1px solid #d5e8c7;background:#fff;color:#2d5520;border-radius:999px;padding:10px 16px;font-size:1rem;font-weight:800;cursor:pointer}
+.caption{text-align:center;color:#fff;margin:12px 0 0;font-weight:700}
+@media(max-width:520px){.shrek{width:min(82vw,360px)}.overlay{padding:12px}.close{top:-48px}}
+</style>
+</head>
+<body>
+<main>
+  <p class="sub">A very important destination</p>
+  <h1>SHREK ZONE</h1>
+  <button class="shrek-button" id="shrekButton" aria-label="Click Shrek to play the video">
+    <img class="shrek" src="shrek-plush.png" alt="A cute Shrek plush toy wearing a brown vest and white tunic">
+  </button>
+  <p class="hint">Click Shrek. You know you want to.</p>
+  <div class="pill"><span class="dot"></span> TAP SHREK TO UNLOCK THE VIDEO</div>
+</main>
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="Shrek video player">
+  <div class="player">
+    <button class="close" id="closeButton" aria-label="Close video">✕ Close</button>
+    <video id="video" controls playsinline preload="metadata">
+      <source src="ss.mp4" type="video/mp4">
+      Your browser does not support HTML video.
+    </video>
+    <p class="caption">Enjoy your highly important Shrek experience.</p>
+  </div>
+</div>
+<script>
+const overlay=document.getElementById('overlay');
+const video=document.getElementById('video');
+function openVideo(){overlay.classList.add('open');video.currentTime=0;video.play().catch(()=>{});}
+function closeVideo(){video.pause();overlay.classList.remove('open');}
+document.getElementById('shrekButton').addEventListener('click',openVideo);
+document.getElementById('closeButton').addEventListener('click',closeVideo);
+overlay.addEventListener('click',e=>{if(e.target===overlay)closeVideo();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&overlay.classList.contains('open'))closeVideo();});
+</script>
+</body>
+</html>
